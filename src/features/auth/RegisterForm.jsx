@@ -2,6 +2,7 @@ import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import { register as registerUser } from "../../service/authService";
+import { Link } from "react-router-dom";
 
 const schema = yup.object({
   email: yup
@@ -37,7 +38,7 @@ export default function RegisterForm() {
   };
 
   return (
-    <div className="mx-auto mt-10 max-w-md rounded bg-white p-6 shadow">
+    <div className="mx-auto max-w-xl rounded bg-white p-4 shadow">
       <h2 className="mb-4 text-center text-2xl font-bold">Đăng ký</h2>
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
         {/* Email */}
@@ -87,6 +88,15 @@ export default function RegisterForm() {
         >
           {isSubmitting ? "Đang xử lý..." : "Đăng ký"}
         </button>
+        <p className="mt-4 text-center text-sm">
+          Đã có tài khoản?{" "}
+          <Link
+            to="/login"
+            className="font-medium text-blue-600 hover:text-blue-800 hover:underline"
+          >
+            Đăng nhập
+          </Link>
+        </p>
       </form>
     </div>
   );

@@ -7,5 +7,13 @@ export const register = (data) => {
 };
 
 export const login = (data) => {
-  return axios.post(`${API_URL}/login`, data);
+  return axios.post(`${API_URL}/access-token`, data);
+};
+
+export const refreshToken = () => {
+  return axios.get(`${API_URL}/refresh-token`, {}, { withCredentials: true });
+};
+
+export const logout = () => {
+  return axios.post(`${API_URL}/logout`, {}, { withCredentials: true });
 };

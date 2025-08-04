@@ -3,12 +3,10 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import { useState } from "react";
 import { login as loginUser } from "../../service/authService";
+import { useNavigate } from "react-router-dom";
 
 const schema = yup.object({
-  email: yup
-    .string()
-    .email("Email không hợp lệ")
-    .required("Email không được để trống"),
+  userName: yup.string().required("Tên người dùng không được để trống"),
   password: yup
     .string()
     .required("Mật khẩu không được để trống")
@@ -17,7 +15,7 @@ const schema = yup.object({
 
 export default function LoginForm() {
   const [errorMessage, setErrorMessage] = useState("");
-
+  const navigator = useNavigate();
   const {
     register,
     handleSubmit,
@@ -33,10 +31,12 @@ export default function LoginForm() {
         throw new Error("Đăng nhập không thành công");
       }
       // Lưu token
-      localStorage.setItem("accessToken", res.data.accessToken);
+      localStorage.setItem("accessToken", res.data.result.accessToken);
+      localStorage.setItem("refreshToken", res.data.result.refreshToken);
       alert("Đăng nhập thành công!");
       reset();
-      // Có thể redirect sang trang chủ
+      // redirect sang trang chủ
+      navigator("/");
     } catch (err) {
       setErrorMessage("Đăng nhập thất bại. Vui lòng kiểm tra lại thông tin.");
       console.error("Login error:", err);
@@ -53,10 +53,9 @@ export default function LoginForm() {
       <div>
         <label className="mb-1 block">Email</label>
         <input
-          {...register("email")}
+          {...register("userName")}
           className="w-full rounded border p-2"
-          type="email"
-          placeholder="Email"
+          placeholder="Username"
         />
         {errors.email && (
           <p className="text-sm text-red-500">{errors.email.message}</p>
